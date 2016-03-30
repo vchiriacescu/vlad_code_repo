@@ -25,7 +25,7 @@ public class AgentApp {
             List<List> initialData = FileUtils.read(inputFilePath);
             AgentSimulation simulation = new AgentSimulation(simulationDuration);
             List<Agent> agentList = simulation.setup(initialData);
-            List<Agent> outputAgentList = new ArrayList<Agent>();
+            List<Object> outputAgentList = new ArrayList<>();
             for (int i = 0; i < agentList.size(); i++) {
                 simulation.process(agentList.get(i));
                 BreedAgent processedAgent = (BreedAgent) agentList.get(i);
