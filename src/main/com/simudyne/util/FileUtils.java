@@ -19,7 +19,7 @@ public class FileUtils {
         return list;
     }
 
-    public static void write (List<Agent> dataToWrite, String fileName) {
+    public static void write (List<Object> dataToWrite, String fileName) {
         //Writing agent attributes to csv file
     }
 }
