@@ -21,21 +21,28 @@ public class AgentApp {
     public static void main(String args[]) {
         BufferedReader br = null;
         try {
-            String inputFilePath = System.getProperty("user.dir") + relativePath + inputFileName;
-            List<List> initialData = FileUtils.read(inputFilePath);
-            AgentSimulation simulation = new AgentSimulation(simulationDuration);
-            List<Agent> agentList = simulation.setup(initialData);
-            List<Object> outputAgentList = new ArrayList<>();
-            for (int i = 0; i < agentList.size(); i++) {
-                simulation.process(agentList.get(i));
-                BreedAgent processedAgent = (BreedAgent) agentList.get(i);
-                if (processedAgent.isAutoRenewal()) {
-                    outputAgentList.add(processedAgent);
-                }
-            }
+            String userDirectory = System.getProperty("user.dir");
+            String inputFilePath = userDirectory + relativePath + inputFileName;
 
-            String outputFilePath = System.getProperty("user.dir") + relativePath + outputFileName;
-            FileUtils.write(outputAgentList, outputFilePath);
+            // Read the input file and obtain the input data structure
+            List<List<String>> inputData = FileUtils.read(inputFilePath);
+
+            //  Instantiate a new agent simulation using the given duration (number
+            //  of steps) and the obtained input data structure
+
+            AgentSimulation simulation = new AgentSimulation(simulationDuration, inputData);
+
+            // Run the simulation
+            simulation.run();
+
+            // Output the unfiltered and filtered lists of agents into the
+            // output data structure (the same as the input, List<List<String>>)
+            List<List<String>> outputData = simulation.output();
+
+            String outputFilePath = userDirectory + relativePath + outputFileName;
+
+            // Write the output data structure to the output file
+            FileUtils.write(outputData, outputFilePath);
 
         } catch (AgentInitializationException ex) {
             System.out.println (ex.getMessage());

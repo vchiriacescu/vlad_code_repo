@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtils {
-    public static List<List> read (String fileName) throws IOException {
+    public static List<List<String>> read (String fileName) throws IOException {
         String currentLine;
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         while ((currentLine = br.readLine()) != null) {
             System.out.println(currentLine);
         }
-        List<List> list = new ArrayList<>();
+        List<List<String>> list = new ArrayList<>();
         return list;
     }
 
-    public static void write (List<Object> dataToWrite, String fileName) {
+    public static void write (List<List<String>> dataToWrite, String fileName) {
         //Writing agent attributes to csv file
     }
 }
