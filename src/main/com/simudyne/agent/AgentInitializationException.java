@@ -8,4 +8,8 @@ public class AgentInitializationException extends Exception {
     {
         super(message);
     }
+    public AgentInitializationException(String message, Throwable exception)
+    {
+        super(message, exception);
+    }
 }

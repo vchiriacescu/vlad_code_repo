@@ -10,17 +10,17 @@ public class AgentSimulation {
     private int simulationDuration;
     private List<Agent> agentList;
 
-    final private String BREED_C_GAINED_HEADER = "Breed C Gained";
-    final private String BREED_C_LOST_HEADER = "Breed C Lost";
-    final private String BREED_C_REGAINED_HEADER = "Breed C Regained";
+    final private String BREED_C_GAINED_HEADER = "Agents that gained Breed C";
+    final private String BREED_C_LOST_HEADER = "Agents that lost Breed C";
+    final private String BREED_C_REGAINED_HEADER = "Agents that regained Breed C";
 
-    public AgentSimulation (int simulationDuration, List<List<String>> initialData) throws AgentInitializationException {
+    public AgentSimulation (int simulationDuration, List<String[]> initialData) throws AgentInitializationException {
         this.simulationDuration = simulationDuration;
         setup(initialData);
     }
 
-    private void setup(List<List<String>> initialData) throws AgentInitializationException {
-        List<String> agentAttributes;
+    private void setup(List<String[]> initialData) throws AgentInitializationException {
+        String[] agentAttributes;
         Agent agent;
         List<Agent> agentList = new ArrayList<>();
         for (int i = 0; i < initialData.size(); i++) {
@@ -120,11 +120,15 @@ public class AgentSimulation {
         return outputAgentList;
     }
 
-    private List<List<String>> outputBreedCGained() {
-        List<List<String>> outputList = new ArrayList<>();
-        List<String> agentAttributes;
-        List<String> breedCGainedHeader = new ArrayList<>();
-        breedCGainedHeader.add(BREED_C_GAINED_HEADER);
+    /**
+     * Adds to the output list the agents that gained breed C
+     * @param outputList the initial output list
+     * @return the resulting output list
+     */
+    private List<String[]> addBreedCGained(List<String[]> outputList) {
+        String[] agentAttributes;
+        String[] breedCGainedHeader = new String[1];
+        breedCGainedHeader[0] = BREED_C_GAINED_HEADER;
         outputList.add(breedCGainedHeader);
 
         List<Agent> noAutoRenewalAgentList = filterNoAutoRenewal(agentList);
@@ -136,11 +140,15 @@ public class AgentSimulation {
         return outputList;
     }
 
-    private List<List<String>> outputBreedCLost() {
-        List<List<String>> outputList = new ArrayList<>();
-        List<String> agentAttributes;
-        List<String> breedCLostHeader = new ArrayList<>();
-        breedCLostHeader.add(BREED_C_LOST_HEADER);
+    /**
+     * Adds to the output list the agents that lost breed C
+     * @param outputList the initial output list
+     * @return the resulting output list
+     */
+    private List<String[]> addBreedCLost(List<String[]> outputList) {
+        String[] agentAttributes;
+        String[] breedCLostHeader = new String[1];
+        breedCLostHeader[0] = BREED_C_LOST_HEADER;
         outputList.add(breedCLostHeader);
 
         List<Agent> noAutoRenewalAgentList = filterNoAutoRenewal(agentList);
@@ -152,11 +160,15 @@ public class AgentSimulation {
         return outputList;
     }
 
-    private List<List<String>> outputBreedCRegained() {
-        List<List<String>> outputList = new ArrayList<>();
-        List<String> agentAttributes;
-        List<String> breedCRegainedHeader = new ArrayList<>();
-        breedCRegainedHeader.add(BREED_C_REGAINED_HEADER);
+    /**
+     * Adds to the output list the agents that regained breed C
+     * @param outputList the initial output list
+     * @return the resulting output list
+     */
+    private List<String[]> addBreedCRegained(List<String[]> outputList) {
+        String[] agentAttributes;
+        String[] breedCRegainedHeader = new String[1];
+        breedCRegainedHeader[0] = BREED_C_REGAINED_HEADER;
         outputList.add(breedCRegainedHeader);
 
         List<Agent> noAutoRenewalAgentList = filterNoAutoRenewal(agentList);
@@ -169,36 +181,25 @@ public class AgentSimulation {
     }
 
     /**
-     * Method output() constructs the output model (a List<List<String>> structure)
+     * Method that constructs the output model (a List<List<String>> structure)
      * based on the total agent list and filtered lists obtained by filtering
      * for breed C gained, breed C lost and breed C regained.
      * @return List<List<String>> the output data structure
      */
-    public List<List<String>> output(){
-        List<String> agentData;
-        List<List<String>> outputList = new ArrayList<>();
+    public List<String[]> output(){
+        String[] agentData;
+        List<String[]> outputList = new ArrayList<>();
+        String[] endOfRunAgentStatus = new String[1];
+        endOfRunAgentStatus[0] = "All agents at the end of the simulation";
+        outputList.add(endOfRunAgentStatus);
         for (int i = 0; i < agentList.size(); i++) {
             agentData = agentList.get(i).writeAttributes();
             outputList.add(agentData);
         }
 
-        List<List<String>> breedCGainedData = outputBreedCGained();
-        for (int i = 0; i < breedCGainedData.size(); i++) {
-            agentData = breedCGainedData.get(i);
-            outputList.add(agentData);
-        }
-
-        List<List<String>> breedCLostData = outputBreedCLost();
-        for (int i = 0; i < breedCLostData.size(); i++) {
-            agentData = breedCLostData.get(i);
-            outputList.add(agentData);
-        }
-
-        List<List<String>> breedCRegainedData = outputBreedCRegained();
-        for (int i = 0; i < breedCRegainedData.size(); i++) {
-            agentData = breedCRegainedData.get(i);
-            outputList.add(agentData);
-        }
+        outputList = addBreedCGained(outputList);
+        outputList = addBreedCLost(outputList);
+        outputList = addBreedCRegained(outputList);
 
         return outputList;
     }
